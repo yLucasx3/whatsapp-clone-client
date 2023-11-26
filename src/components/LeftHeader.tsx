@@ -1,23 +1,42 @@
+'use client';
 import React from 'react';
 import Image from 'next/image';
 import Icon from './Icon';
+import MultActions, { type Action } from './MultActions';
+import { useAppDispatch } from '@/redux/hooks';
+import { toggleModal } from '@/redux/features/modalSlice';
 
 const LeftHeader = () => {
+  const actions: Action[] = [
+    { name: 'New Group', handleSelect: () => {} },
+    { name: 'New community', handleSelect: () => {} },
+    { name: 'Favorite messages', handleSelect: () => {} },
+    { name: 'Mute conversations', handleSelect: () => {} },
+    { name: 'Settings', handleSelect: () => {} },
+    { name: 'Disconnect', handleSelect: () => {} }
+  ];
+
+  const dispatch = useAppDispatch();
+
   return (
     <div className="flex h-14 items-center px-4 py-3 justify-between bg-dark-level-4">
-      <Image
-        src="/profile.enc"
-        width={24}
-        height={24}
-        alt="profile picture"
-        className="h-10 w-10 rounded-full cursor-pointer"
-      />
+      <div
+        onClick={() => dispatch(toggleModal('profile'))}
+        className="transition-all duration-300">
+        <Image
+          src="/profile.enc"
+          width={24}
+          height={24}
+          alt="profile picture"
+          className="h-10 w-10 rounded-full cursor-pointer"
+        />
+      </div>
       <div className="flex gap-3">
         <Icon name="group" alt="New Group" />
         <Icon name="status" alt="New Status" />
         <Icon name="channel" alt="New Channel" />
         <Icon name="new-chat" alt="New Chat" />
-        <Icon name="options" alt="More Options" />
+        <MultActions actions={actions} />
       </div>
     </div>
   );

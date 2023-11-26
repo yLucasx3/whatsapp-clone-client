@@ -114,8 +114,6 @@ const Messages = () => {
 
   const messages = useAppSelector((state) => state.messageReducer.messages);
 
-  console.log('messages:', messages);
-
   return (
     <div className="w-full h-full bg-[url('/background-messages.png')] invert bg-contain overflow-y-auto px-8">
       {/* <div className="w-full h-full overflow-y-auto px-8"> */}

@@ -60,7 +60,9 @@
         "import/prefer-default-export": "off",
         "react/prop-types": "off",
         "multiline-ternary": "off",
-        "@typescript-eslint/member-delimiter-style": "off"
+        "@typescript-eslint/member-delimiter-style": "off",
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "space-before-function-paren": "off",
     },
     "settings": {
         "import/resolver": {
