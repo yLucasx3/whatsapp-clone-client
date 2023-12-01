@@ -1,6 +1,6 @@
 import React, { type CSSProperties } from 'react';
-import { icons } from './icons';
 import Image from 'next/image';
+import { icons } from './icons';
 
 type IconType = keyof typeof icons;
 
@@ -11,6 +11,7 @@ interface IconProps {
   heigth?: number;
   width?: number;
   customStyle?: CSSProperties;
+  handleClick?: () => void;
 }
 
 const Icon = ({
@@ -19,10 +20,13 @@ const Icon = ({
   className,
   heigth,
   width,
-  customStyle
+  customStyle,
+  handleClick
 }: IconProps) => {
   return (
-    <div className="p-2 rounded-full active:bg-dark-level-3-opacity transition-all">
+    <div
+      className="p-2 rounded-full active:bg-dark-level-3-opacity transition-all"
+      onClick={handleClick}>
       <Image
         src={icons[name]}
         alt={alt}

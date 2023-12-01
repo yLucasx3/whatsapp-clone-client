@@ -1,28 +1,73 @@
 'use client';
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { useAppDispatch } from '@/redux/hooks';
-import { newMessage } from '@/redux/features/messageSlice';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/client';
+import { useSession } from 'next-auth/react';
+import { useAppSelector } from '@/redux/hooks';
+
+interface Message {
+  _id: string;
+  content: string;
+  type: string;
+  status: string;
+  sender: string;
+  recipient: string;
+  conversation: string;
+}
+
+const mutation = gql`
+  mutation SendMessage(
+    $type: String!
+    $content: String!
+    $sender: String!
+    $recipient: String!
+    $conversation: String!
+    $status: String!
+  ) {
+    sendMessage(
+      type: $type
+      content: $content
+      sender: $sender
+      recipient: $recipient
+      conversation: $conversation
+      status: $status
+    ) {
+      _id
+      content
+      type
+      status
+      sender
+      recipient
+      conversation
+    }
+  }
+`;
 
 const Actions = () => {
   const [message, setMessage] = useState('');
 
-  const dispatch = useAppDispatch();
+  const currentConversation = useAppSelector(
+    (state) => state.conversationReducer
+  );
+
+  const { data: dataSession } = useSession();
+
+  const [sendMessageMutation, { data, loading, error }] = useMutation(mutation);
 
   const sendMessage = () => {
-    const date = new Date();
-    const hour = date.getHours();
-    const min = date.getMinutes();
-
-    const currentTime = `${hour}:${min}`;
-
-    const defaultMessage = {
-      message,
-      senderId: '3jk2ds8a',
-      receiverId: 'gustavinho',
-      time: currentTime
-    };
-    dispatch(newMessage(defaultMessage));
+    if (dataSession && dataSession.user) {
+      sendMessageMutation({
+        variables: {
+          type: 'text',
+          content: message,
+          sender: dataSession.user.email,
+          recipient: currentConversation.recipient.email,
+          conversation: currentConversation.currentConversation,
+          status: 'sent'
+        }
+      });
+    }
 
     setMessage('');
   };

@@ -3,10 +3,6 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 
-/**
- * @see https://www.apollographql.com/docs/react/data/subscriptions
- */
-
 const httpGqlLink = new HttpLink({
   uri: 'http://localhost:3001/graphql'
 });

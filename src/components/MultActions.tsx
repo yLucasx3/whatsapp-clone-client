@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import Icon from './Icon';
+import Icon from './icon';
 
 export interface Action {
   name: string;

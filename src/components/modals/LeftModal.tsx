@@ -2,17 +2,18 @@ import React, { type ReactNode } from 'react';
 import { toggleModal, type ModalType } from '@/redux/features/modalSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { useSpring, animated } from 'react-spring';
-import Icon from './Icon';
+import Icon from '../icon';
 
 interface LeftModalProps {
-  title: ModalType;
+  type: ModalType;
+  title: string;
   children: ReactNode;
 }
 
-const LeftModal = ({ title, children }: LeftModalProps) => {
+const LeftModal = ({ type, title, children }: LeftModalProps) => {
   const dispatch = useAppDispatch();
 
-  const isOpen = useAppSelector((state) => state.modalReducer[title]);
+  const isOpen = useAppSelector((state) => state.modalReducer[type]);
 
   const animation = useSpring({
     opacity: isOpen ? 1 : 0,
@@ -28,7 +29,7 @@ const LeftModal = ({ title, children }: LeftModalProps) => {
       <div className="flex h-28 bg-dark-level-4 items-end p-3">
         <div
           className="flex items-center gap-4"
-          onClick={() => dispatch(toggleModal(title))}>
+          onClick={() => dispatch(toggleModal(type))}>
           <Icon name="arrow-left" alt="Back" />
           <span className="text-lg text-slate-300 font-medium capitalize">
             {title}

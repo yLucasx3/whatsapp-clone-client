@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import LeftModal from '../LeftModal';
-import Icon from '../Icon';
+import Icon from '../icon';
 import Image from 'next/image';
+import LeftModal from './LeftModal';
 
 const ProfileItem = ({
   property,
@@ -55,7 +55,7 @@ const ProfileModal = () => {
   const [name, setName] = useState('Lucas');
   const [message, setMessage] = useState('.');
   return (
-    <LeftModal title="profile">
+    <LeftModal type="profile" title="Profile">
       <div className="flex flex-col items-center py-6 text-slate-200">
         <div
           className="relative"

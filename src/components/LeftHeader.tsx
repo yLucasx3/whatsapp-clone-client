@@ -1,10 +1,11 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import Icon from './Icon';
+import Icon from './icon';
 import MultActions, { type Action } from './MultActions';
 import { useAppDispatch } from '@/redux/hooks';
 import { toggleModal } from '@/redux/features/modalSlice';
+import { useSession } from 'next-auth/react';
 
 const LeftHeader = () => {
   const actions: Action[] = [
@@ -18,13 +19,15 @@ const LeftHeader = () => {
 
   const dispatch = useAppDispatch();
 
+  const { data } = useSession();
+
   return (
     <div className="flex h-14 items-center px-4 py-3 justify-between bg-dark-level-4">
       <div
         onClick={() => dispatch(toggleModal('profile'))}
         className="transition-all duration-300">
         <Image
-          src="/profile.enc"
+          src={data?.user?.image || ''}
           width={24}
           height={24}
           alt="profile picture"
@@ -34,8 +37,11 @@ const LeftHeader = () => {
       <div className="flex gap-3">
         <Icon name="group" alt="New Group" />
         <Icon name="status" alt="New Status" />
-        <Icon name="channel" alt="New Channel" />
-        <Icon name="new-chat" alt="New Chat" />
+        <Icon
+          name="new-chat"
+          alt="New Chat"
+          handleClick={() => dispatch(toggleModal('newConversation'))}
+        />
         <MultActions actions={actions} />
       </div>
     </div>

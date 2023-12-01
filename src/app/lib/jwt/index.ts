@@ -5,6 +5,7 @@ export const signJwt = async (payload: any, expiresIn = '1d') => {
     algorithm: 'HS512',
     expiresIn
   });
+
   return token;
 };
 

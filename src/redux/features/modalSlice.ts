@@ -2,10 +2,12 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface ModalState {
   profile: boolean;
+  newConversation: boolean;
 }
 
 const initialState: ModalState = {
-  profile: false
+  profile: false,
+  newConversation: false
 };
 
 export type ModalType = keyof typeof initialState;
