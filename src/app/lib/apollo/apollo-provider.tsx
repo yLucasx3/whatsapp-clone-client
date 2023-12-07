@@ -11,6 +11,7 @@ import { setContext } from '@apollo/client/link/context';
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
+import { createUploadLink } from 'apollo-upload-client';
 
 declare module '@apollo/client' {
   export interface DefaultContext {
@@ -37,6 +38,16 @@ const authLink = setContext(async (_, { headers, token, email }) => {
   };
 });
 
+const authLink2 = setContext(async (_, { connectionParams, token, email }) => {
+  return {
+    connectionParams: {
+      ...connectionParams,
+      ...(token ? { authorization: `Bearer ${token}` } : {}),
+      ...(email ? { email } : {})
+    }
+  };
+});
+
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -46,7 +57,7 @@ const splitLink = split(
       definition.operation === 'subscription'
     );
   },
-  wsLink,
+  authLink2.concat(wsLink),
   authLink.concat(httpLink)
 );
 

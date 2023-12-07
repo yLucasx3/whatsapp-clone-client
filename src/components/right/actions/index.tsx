@@ -1,48 +1,9 @@
 'use client';
 import React, { useState } from 'react';
-import Image from 'next/image';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
 import { useSession } from 'next-auth/react';
 import { useAppSelector } from '@/redux/hooks';
-
-interface Message {
-  _id: string;
-  content: string;
-  type: string;
-  status: string;
-  sender: string;
-  recipient: string;
-  conversation: string;
-}
-
-const mutation = gql`
-  mutation SendMessage(
-    $type: String!
-    $content: String!
-    $sender: String!
-    $recipient: String!
-    $conversation: String!
-    $status: String!
-  ) {
-    sendMessage(
-      type: $type
-      content: $content
-      sender: $sender
-      recipient: $recipient
-      conversation: $conversation
-      status: $status
-    ) {
-      _id
-      content
-      type
-      status
-      sender
-      recipient
-      conversation
-    }
-  }
-`;
+import { sendMessageMutation } from './gql.requests';
+import Image from 'next/image';
 
 const Actions = () => {
   const [message, setMessage] = useState('');
@@ -51,19 +12,21 @@ const Actions = () => {
     (state) => state.conversationReducer
   );
 
-  const { data: dataSession } = useSession();
+  const { data: session } = useSession();
 
-  const [sendMessageMutation, { data, loading, error }] = useMutation(mutation);
+  const { mutate } = sendMessageMutation();
 
   const sendMessage = () => {
-    if (dataSession && dataSession.user) {
-      sendMessageMutation({
+    if (session && session.user) {
+      const { conversation, recipient } = currentConversation;
+
+      mutate({
         variables: {
           type: 'text',
           content: message,
-          sender: dataSession.user.email,
-          recipient: currentConversation.recipient.email,
-          conversation: currentConversation.currentConversation,
+          sender: session.user.email,
+          recipient: recipient.email,
+          conversation: conversation,
           status: 'sent'
         }
       });

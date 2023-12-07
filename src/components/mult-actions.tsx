@@ -51,6 +51,7 @@ const MultActions = ({ actions }: MultActionProps) => {
           {actions.map((action) => (
             <span
               key={action.name}
+              onClick={action.handleSelect}
               className="px-6 py-3 cursor-pointer hover:bg-dark-level-3-opacity text-sm text-slate-300">
               {action.name}
             </span>

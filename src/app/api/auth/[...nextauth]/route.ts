@@ -50,7 +50,6 @@ const handler = NextAuth({
         })
           .then(async (response) => {
             const data = await response.json();
-
             if (data.message === 'Success') {
               return true;
             }

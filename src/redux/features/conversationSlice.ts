@@ -1,4 +1,15 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+export interface Message {
+  _id: string;
+  content: string;
+  status: string;
+  sender: string;
+  recipient: string;
+  createdAt: string;
+}
+
+export type MessageWithoutId = Omit<Message, '_id'>;
 
 export interface Recipient {
   email: string;
@@ -7,33 +18,44 @@ export interface Recipient {
 }
 
 interface ConversationState {
-  currentConversation: string | undefined;
+  conversation: string | undefined;
   recipient: Recipient;
+  messages: Message[];
 }
 
 const initialState: ConversationState = {
-  currentConversation: undefined,
+  conversation: undefined,
   recipient: {
     email: '',
     displayName: '',
     picture: ''
-  }
+  },
+  messages: []
 };
 
 export const conversation = createSlice({
   name: 'conversation',
   initialState,
   reducers: {
-    setCurrentConversation: (state, action: PayloadAction<string>) => {
-      state.currentConversation = action.payload;
+    setCurrentConversation: (
+      state,
+      action: PayloadAction<Omit<ConversationState, 'messages'>>
+    ) => {
+      const { conversation, recipient } = action.payload;
+
+      state.conversation = conversation;
+      state.recipient = recipient;
     },
-    setConversation: (state, action: PayloadAction<ConversationState>) => {
-      state.currentConversation = action.payload.currentConversation;
-      state.recipient = action.payload.recipient;
+    setMessages: (state, action: PayloadAction<Message[]>) => {
+      state.messages = action.payload;
+    },
+    addMessage: (state, action: PayloadAction<Message>) => {
+      state.messages = [...state.messages, action.payload];
     }
   }
 });
 
-export const { setCurrentConversation, setConversation } = conversation.actions;
+export const { setCurrentConversation, setMessages, addMessage } =
+  conversation.actions;
 
 export default conversation.reducer;

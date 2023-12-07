@@ -1,11 +1,12 @@
 import Image from 'next/image';
-import LeftModal from './LeftModal';
 import { gql } from '@apollo/client';
 import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentConversation } from '@/redux/features/conversationSlice';
 import { useSession } from 'next-auth/react';
 import SearchInput from '../SearchInput';
+import { toggleModal } from '@/redux/features/modalSlice';
+import LeftModal from './left-modal';
 export const dynamic = 'force-dynamic';
 
 export interface User {
@@ -31,21 +32,29 @@ const NewConversationModal = () => {
 
   const dispatch = useAppDispatch();
 
-  const { data: dataSession } = useSession();
+  const { data: session } = useSession();
 
   return (
     <LeftModal type="newConversation" title="New Conversation">
       <SearchInput placeholder="Search users" hideFilterIcon />
       {data.users
-        .filter((user) => user.email !== dataSession?.user?.email)
-        .map((user: User) => (
+        .filter((user) => user.email !== session?.user?.email)
+        .map(({ email, displayName, picture }) => (
           <div
-            key={user.email}
-            onClick={() => dispatch(setCurrentConversation(user.email))}
+            key={email}
+            onClick={() => {
+              dispatch(
+                setCurrentConversation({
+                  conversation: '',
+                  recipient: { displayName, email, picture }
+                })
+              );
+              dispatch(toggleModal('newConversation'));
+            }}
             className="flex px-6 pt-4 gap-2 cursor-pointer bg-dark-level-3 hover:bg-dark-level-3-opacity">
             <div className="flex justify-center items-center">
               <Image
-                src={user.picture}
+                src={picture}
                 width={49}
                 height={49}
                 alt="Conversation Picture"
@@ -55,7 +64,7 @@ const NewConversationModal = () => {
             <div className="flex w-full flex-col py-4 pb-2 border-b border-slate-800">
               <div className="flex w-full">
                 <span className="text-slate-300 font-medium">
-                  {user.displayName}
+                  {displayName}
                 </span>
               </div>
               <div className="flex text-sm text-slate-400">recadinho</div>

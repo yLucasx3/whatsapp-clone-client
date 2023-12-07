@@ -1,11 +1,11 @@
 'use client';
 import React from 'react';
 import Image from 'next/image';
-import Icon from './icon';
-import MultActions, { type Action } from './MultActions';
+import Icon from '@/components/icon';
+import MultActions, { Action } from '@/components/mult-actions';
 import { useAppDispatch } from '@/redux/hooks';
 import { toggleModal } from '@/redux/features/modalSlice';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 
 const LeftHeader = () => {
   const actions: Action[] = [
@@ -14,7 +14,15 @@ const LeftHeader = () => {
     { name: 'Favorite messages', handleSelect: () => {} },
     { name: 'Mute conversations', handleSelect: () => {} },
     { name: 'Settings', handleSelect: () => {} },
-    { name: 'Disconnect', handleSelect: () => {} }
+    {
+      name: 'Disconnect',
+      handleSelect: () => {
+        signOut({
+          redirect: true,
+          callbackUrl: 'http://localhost:3000/login'
+        });
+      }
+    }
   ];
 
   const dispatch = useAppDispatch();

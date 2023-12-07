@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Icon from '../icon';
 import Image from 'next/image';
-import LeftModal from './LeftModal';
+import LeftModal from './left-modal';
 
 const ProfileItem = ({
   property,

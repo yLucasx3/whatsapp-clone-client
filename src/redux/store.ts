@@ -1,11 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import messageReducer from './features/messageSlice';
 import modalReducer from './features/modalSlice';
 import conversationReducer from './features/conversationSlice';
 
 export const store = configureStore({
   reducer: {
-    messageReducer,
     modalReducer,
     conversationReducer
   },

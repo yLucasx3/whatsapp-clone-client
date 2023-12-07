@@ -1,13 +1,14 @@
 'use client';
-import { Left, Right } from '@/components/main-content';
-import { useAppSelector } from '@/redux/hooks';
 import React from 'react';
+import Left from '@/components/left';
+import Right from '@/components/right';
+import { useAppSelector } from '@/redux/hooks';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 
 const Home = () => {
-  const currentConversation = useAppSelector(
-    (state) => state.conversationReducer.currentConversation
+  const recipient = useAppSelector(
+    (state) => state.conversationReducer.recipient
   );
 
   const { data: session, status } = useSession();
@@ -21,7 +22,7 @@ const Home = () => {
       {session && (
         <div className="flex w-full bg-dark-level-2">
           <Left />
-          {currentConversation && <Right />}
+          {recipient.displayName && <Right />}
         </div>
       )}
     </main>
