@@ -4,9 +4,9 @@ import { useSuspenseQuery } from '@apollo/experimental-nextjs-app-support/ssr';
 import { useAppDispatch } from '@/redux/hooks';
 import { setCurrentConversation } from '@/redux/features/conversationSlice';
 import { useSession } from 'next-auth/react';
-import SearchInput from '../SearchInput';
 import { toggleModal } from '@/redux/features/modalSlice';
 import LeftModal from './left-modal';
+import SearchInput from '../search-input';
 export const dynamic = 'force-dynamic';
 
 export interface User {

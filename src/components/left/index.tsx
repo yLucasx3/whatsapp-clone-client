@@ -1,12 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import SearchInput from '@/components/SearchInput';
 import ConversationItem from './conversation-item';
 import ProfileModal from '../modals/profile-modal';
 import NewConversationModal from '../modals/new-conversation-modal';
 import LeftHeader from './left-header';
 import { getAllMyConversations } from './gql.requests';
 import { subscribeToConversation } from '../right/messages-container/gql.requests';
+import SearchInput from '../search-input';
 
 const Left = () => {
   const { conversations: initialConversations, refetch } =

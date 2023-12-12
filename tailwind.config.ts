@@ -15,6 +15,7 @@ const config: Config = {
         'dark-level-3-opacity': '#111b216f',
         'dark-level-4': '#202C33',
         'dark-level-5': '#2A3942',
+        'dark-level-6': '#182229',
         'green-text': '#008069',
         notification: '#00A884'
       },

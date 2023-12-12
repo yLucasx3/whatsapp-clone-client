@@ -8,6 +8,10 @@ export interface Message {
   recipient: string;
   createdAt: string;
 }
+export interface GroupedMessage {
+  date: string;
+  messages: Message[];
+}
 
 export type MessageWithoutId = Omit<Message, '_id'>;
 
