@@ -18,8 +18,6 @@ const GET_CONVERSATION_MESSAGES = gql`
 `;
 
 export const getConversationMessages = (id: string) => {
-  const dispatch = useAppDispatch();
-
   const { data } = useSuspenseQuery(GET_CONVERSATION_MESSAGES, {
     variables: { id: id },
     fetchPolicy: 'no-cache'

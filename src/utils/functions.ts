@@ -23,17 +23,18 @@ export const timeFormat = (date: Date) => {
 };
 
 export const formatDate = (date: Date) => {
+  const dateToFormat = new Date(date);
   const today = new Date();
   const yesterday = new Date();
   yesterday.setDate(today.getDate() - 1);
 
-  if (date.toDateString() === yesterday.toDateString()) {
+  if (dateToFormat.toDateString() === yesterday.toDateString()) {
     return 'Yesterday';
-  } else if (date < yesterday) {
-    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  } else if (dateToFormat < yesterday) {
+    return dateToFormat.toLocaleDateString('en-US', { weekday: 'long' });
   } else {
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
+    const hours = dateToFormat.getHours();
+    const minutes = dateToFormat.getMinutes();
 
     return `${hours}:${minutes}`;
   }
